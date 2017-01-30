@@ -1,0 +1,5 @@
+# API keys and other config
+config.yml
+
+# Access token stuff
+auth.token

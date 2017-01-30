@@ -1,0 +1,12 @@
+typeform:
+  form_id: S72DJg
+  api_key: <paste typeform api key here>
+
+gmail:
+  client_id: <paste gmail client id here>
+  client_secret: <paste gmail client secret here>
+
+form:
+  event_name_question: asdf
+  organizer_email_question: asdf
+
