@@ -2,11 +2,19 @@ require "http"
 require "json"
 require "yaml"
 require_relative "response"
+require "octokit"
 
 class Scanner
 
   def self.run()
+
     config = YAML.load_file("config.yml")
+
+    Octokit.configure do |c|
+      c.login = config["github"]["username"].strip
+      c.password = config["github"]["password"].strip
+    end
+
     url = "https://api.typeform.com/v1/form/#{config["typeform"]["form_id"]}?key=#{config["typeform"]["api_key"]}"
     resp = HTTP.get(url)    
 
@@ -29,6 +37,7 @@ class Scanner
       .select(&:is_complete?)
       .select(&:is_new?)
       .each(&:send_invite_email!)
+      .each(&:create_github_pull_request!)
       .each(&:invite_to_slack!)
 
   end

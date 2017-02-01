@@ -10,3 +10,6 @@ form:
   event_name_question: asdf
   organizer_email_question: asdf
 
+github:
+  username: <paste github username here>
+  password: <paste github password here>
