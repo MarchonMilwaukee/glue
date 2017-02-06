@@ -8,4 +8,3 @@ task :oauth do
   Gmail.credentials()
 end
 
-

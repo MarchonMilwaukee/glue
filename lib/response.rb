@@ -1,4 +1,6 @@
 require_relative "./gmail"
+require_relative "./github"
+
 
 
 class Response 
@@ -8,6 +10,7 @@ class Response
   def initialize(opts={}) 
     @complete = opts["complete"] == "1"
     @email_address = "nick@rokkincat.com"
+    @event_name = "Test event"
     self.answers = opts["answers"]
   end
 
@@ -28,7 +31,20 @@ class Response
   end
 
   def create_github_pull_reqest!
-    puts "[STUB] Post to github"
+    Github.create_pull_request(
+      @event_name, 
+      self.event_body, 
+      self.pull_request_description
+    )
   end
+
+  def event_body() 
+    ""
+  end
+
+  def pull_request_description()
+    ""
+  end
+
 
 end
