@@ -56,8 +56,6 @@ class Response
 
     @support_required = answers_for(SUPPORT_QUESTION)
     @how = answers_for(HOW_I_HELP_QUESTION)
-
-    puts event_body()
   end
 
   def is_new? 
