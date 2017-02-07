@@ -15,7 +15,7 @@ class Scanner
       c.password = config["github"]["password"].strip
     end
 
-    url = "https://api.typeform.com/v1/form/#{config["typeform"]["form_id"]}?key=#{config["typeform"]["api_key"]}"
+    url = "https://api.typeform.com/v1/form/#{config["typeform"]["form_id"]}?key=#{config["typeform"]["api_key"]}&completed=true"
     resp = HTTP.get(url)    
 
     # If valid, process the responses
@@ -28,7 +28,7 @@ class Scanner
   end
 
   def self.process(responses)
-
+    
     # Fetch all of the complete responses
     # and select the ones who have been completed
     # since the last scan. Send them an email
@@ -36,6 +36,7 @@ class Scanner
     responses.map { |r| Response.new(r) }
       .select(&:is_complete?)
       .select(&:is_new?)
+      .select(&:is_event?)
       .each(&:send_invite_email!)
       .each(&:create_github_pull_request!)
       .each(&:invite_to_slack!)
