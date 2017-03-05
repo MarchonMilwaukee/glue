@@ -28,7 +28,7 @@ class Scanner
   end
 
   def self.process(responses)
-    
+
     # Fetch all of the complete responses
     # and select the ones who have been completed
     # since the last scan. Send them an email
@@ -37,8 +37,8 @@ class Scanner
       .select(&:is_complete?)
       .select(&:is_new?)
       .select(&:is_event?)
-      .each(&:send_invite_email!)
       .each(&:create_github_pull_request!)
+      .each(&:send_invite_email!)
       .each(&:invite_to_slack!)
 
   end

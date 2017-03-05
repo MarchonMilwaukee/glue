@@ -2,6 +2,8 @@ require "erb"
 require_relative "./gmail"
 require_relative "./github"
 
+SUPPORT_EMAIL_ADDRESS       = "nick@rokkincat.com"
+
 HOW_I_HELP_QUESTION         = "list_42098940_choice_*"
 NAME_QUESTION               = "textfield_41889987"
 EMAIL_QUESTION              = "textfield_42591039"
@@ -21,7 +23,7 @@ SUPPORT_QUESTION            = "list_41897469_choice_*"
 KEYWORDS_QUESTION           = "textarea_41890292"
 COST_QUESTION               = "textfield_41890672"
 
-IS_EVENT_RESPONSE_TEXT      = "I'd like to submit an event to the calendar"
+IS_EVENT_RESPONSE_TEXT      = "Submit an event to the calendar"
 
 class Response 
 
@@ -34,7 +36,7 @@ class Response
     
 
   def initialize(opts={}) 
-    @complete = opts["complete"] == "1"
+    @complete = opts["completed"] == "1"
 
     @answers = opts["answers"]
     @email_address = @answers[EMAIL_QUESTION]
@@ -67,19 +69,27 @@ class Response
   end
 
   def is_event?
-    @how.includes?(IS_EVENT_RESPONSE_TEXT)  
+    @how.include?(IS_EVENT_RESPONSE_TEXT)  
   end
 
   def send_invite_email! 
-    Gmail.send!(self)
+    begin 
+      Gmail.send!(self)
+    rescue => e 
+      email_temp = @email_address
+      @email_address = SUPPORT_EMAIL_ADDRESS
+      Gmail.send!(self)
+      @email_address = email_temp
+      puts "Invalid email '#{@email_address}', sending to support instead"
+    end
   end
 
   def invite_to_slack!
     puts "[STUB] Send invite to slack"
   end
 
-  def create_github_pull_reqest!
-    Github.create_pull_request(
+  def create_github_pull_request!
+    @pull_request = Github.create_pull_request(
       @event_name, 
       self.event_body, 
       self.pull_request_description
@@ -87,17 +97,29 @@ class Response
   end
 
   def event_body() 
-    ERB.new(File.read("./templates/markdown.md.erb")).result(binding())
+    ERB.new(File.read("./templates/event.md.erb")).result(binding())
   end
 
   def pull_request_description()
-    "#{@event_name}"
+    ERB.new(File.read("./templates/pull-request.md.erb")).result(binding())
   end
 
   def answers_for(glob) 
     @answers.keys
       .select{ |key| File.fnmatch(glob, key) }
       .map{ |key| @answers[key].strip }
+  end
+
+  def email_body() 
+    if self.is_event? 
+      ERB.new(File.read("./templates/event-email.html.erb")).result(binding())
+    else
+      ERB.new(File.read("./templates/volunteer-email.html.erb")).result(binding())
+    end
+  end
+
+  def github_link() 
+    @pull_request.html_url
   end
 
 end

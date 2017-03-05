@@ -53,17 +53,12 @@ class Gmail
     message.header['To'] = response.email_address
     message.header['From'] = "mom200nof@gmail.com"
     message.header['Subject'] = "200 Nights of Freedom Event Submission"
-    message.body = """
-    things
-    are
-    things
-    """
+    message.header['Content-Type'] = 'text/html'
+    message.body = response.email_body()
 
     msg = gmail.send_user_message('me', upload_source: StringIO.new(message.to_s), content_type: "message/rfc822")
     modify_request = Google::Apis::GmailV1::ModifyMessageRequest.new(add_label_ids: ["Label_1"])
     gmail.modify_message('me', msg.id, modify_request)
-
-    puts msg.inspect
 
   end
 
