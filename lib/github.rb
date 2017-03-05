@@ -27,7 +27,7 @@ class Github
 
     sha_of_new_commit = Octokit.create_commit(repo, commit_message, sha_of_new_tree, branch_sha).sha
     updated_ref = Octokit.update_ref(repo, ref, sha_of_new_commit)
-    Octokit.create_pull_request(repo, "master", Github.slug(name), "#{name}", "This is a body")
+    Octokit.create_pull_request(repo, "master", Github.slug(name), "#{name}", description)
   end
 
   def self.slug(str) 

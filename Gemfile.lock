@@ -50,6 +50,7 @@ GEM
       sawyer (~> 0.8.0, >= 0.5.3)
     os (0.9.6)
     public_suffix (2.0.5)
+    rake (10.4.2)
     representable (2.3.0)
       uber (~> 0.0.7)
     retriable (2.1.0)
@@ -74,6 +75,7 @@ DEPENDENCIES
   google-api-client
   http
   octokit
+  rake
   rmail
 
 RUBY VERSION

@@ -1,0 +1,31 @@
+# Event Submission: <%= @event_name %>
+
+<table>
+  <tr>
+    <td>Organizer</td>
+    <td><a href="mailto:<%= @email_address %>"><%= @organizer_name %></a></td>
+  </tr>
+  <% if @organization %><tr>
+      <td>Organization</td>
+      <td><%= @organization %></td>
+    </tr><% end %>
+  <tr>
+    <td>Date</td>
+    <td><%= @event_date %></td>
+  </tr>
+  <tr>
+    <td>Cost</td>
+    <td><%= @cost %></td>
+  </tr>
+  <tr>
+    <td>Venue</td>
+    <td><%= @venue %></td>
+  </tr>
+</table>
+
+## How this works
+
+200 Nights of Freedom is handling many event submissions, so we have set up some tools to help us keep track of all of them. This pull request is a living request for the 200NoF team to post your event on the website. It includes all the information you submitted and allows for comments from the community, the 200NoF team, and you. If you would like to comment during the process, you must sign up by clicking the green "Sign up for free" button at the bottom of this page. Once you have done that, you will find a comment box on the bottom of this page that you can use to communicate with the 200NoF team.
+
+Any questions that the 200NoF team has while reviewing your event submission will be posted to here and emailed to you. Finally, the team will either accept or reject your proposal. If accepted, the Pull Request will be closed and your event will show up on the calendar within a few minutes.
+
