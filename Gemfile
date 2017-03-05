@@ -5,4 +5,5 @@ gem "rmail"
 gem "http"
 gem "google-api-client"
 gem "octokit"
+gem "rake"
 
